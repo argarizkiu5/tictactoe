@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script type=module src="js/index.js" defer></script>
+</head>
+<body>
+  <div id="main" class="main-class">
+    <div class="title-wrapper"><h1>WELCOME TO SIMPLE TIC TAC TOE GAME</h1></div>
+    <div class="ins-wrapper">
+      <div class="ins-wrapper-zero black-bold-text">Direction:</div>
+      <div class="ins-wrapper-one">You can start this game by Tap on one of the box below. For the first tapper you're <span class="orange-text">the Player One</span> or <span class="blue-text">the Circle Player</span>. For the first tapper you're <span class="green-text">the Player Two</span> or <span class="black-bold-text">the Cross Player</span>. If you feels that the current tile are not chalenging feel free to increase the amount of it by insert your desired amount tiles here..</div>
+    </div>
+    <div class="form-wrapper">
+      <div class="input-tile-wrapper">
+        <div class="label-for-input">
+          <div class="label-first">Column:</div>
+          <div class="label-second gap-left">Row:</div>
+        </div>
+        <input type="number" id="inputAmount1" value="3" placeholder="min value is 2" onkeydown="if(event.key==='.'){event.preventDefault();}"  oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');" />
+        <input class="gap-left" type="number" id="inputAmount2" placeholder="min value is 2" value="3" onkeydown="if(event.key==='.'){event.preventDefault();}"  oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');" />
+      </div>
+      <div class="apply-button-wrapper"><button id="applySizeButton">Apply</button></div>
+    </div>
+    <div id="ticMainWrapper" class="tic-main-content-wrapper"></div>
+    <div id="ticNoticeWrapper" class="tic-notice-wrapper"></div>
+    <div class="reset-button-wrapper"><button id="resetButton">Reset Board</button></div>
+  </div>
+</body>
+</html>
