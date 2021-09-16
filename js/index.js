@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var circleCounter = 0;
   var boardClickCounter = 0;
   var boardScoreWrapper = [];
+  var xyLength = getScaleTicSize();
   mainFunc();
 
   function mainFunc() {
@@ -17,27 +18,21 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function renderBoard() {
-    let xLength = getScaleTicSize("x");
-    let yLength = getScaleTicSize("y");
-    if(xLength != 0 && yLength != 0) {
-      generateTicTacToe(xLength, yLength);
-      setListenerOnBoard();
-      appendNoticeText(!isGameStarted ? defNoticeText : "enjoy your game :)");
-    }
+    xyLength = getScaleTicSize();
+    generateTicTacToe(xyLength, xyLength);
+    setListenerOnBoard();
+    appendNoticeText(!isGameStarted ? defNoticeText : "enjoy your game :)");
   }
 
-  function getScaleTicSize(inputtedAxis) {
-    if(inputtedAxis && inputtedAxis != "") {
-      let inputFieldElmnt = inputtedAxis == "x" ? document.getElementById("inputAmount1") : document.getElementById("inputAmount2");
-      let recentCurrentInput = inputFieldElmnt && inputFieldElmnt.value && inputFieldElmnt.value != 0 ? inputFieldElmnt.value : 3;
-      if(recentCurrentInput == 1) {
-        appendNoticeText("<span class='red-text'>*the minimum value to be inserted is 2</span>");
-        inputFieldElmnt.focus();
-        return 0;
-      }
-      return recentCurrentInput;
+  function getScaleTicSize() {
+    let inputFieldElmnt = document.getElementById("inputAmount");
+    let recentCurrentInput = inputFieldElmnt && inputFieldElmnt.value && inputFieldElmnt.value != 0 ? inputFieldElmnt.value : 3;
+    if(recentCurrentInput == 1) {
+      appendNoticeText("<span class='red-text'>*the minimum value to be inserted is 2</span>");
+      inputFieldElmnt.focus();
+      return 0;
     }
-    return 3;
+    return recentCurrentInput;
   }
 
   function generateTicTacToe(xVal, yVal) {
@@ -72,7 +67,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let widthHeightPanel = wrapperWidth / itemTotal + "px";
     let columnId = 0;
     let rowId = 0;
-    let isSameLength = (xVal == yVal);
     let columnLength = xVal;
     let rowLength = yVal;
     boardScoreWrapper = []; /* reset board scorer */
@@ -89,17 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         columnId = i < rowLength ? i : 0;
         let multipier = rowId + 1;
-        if(isSameLength) {
-          columnId = i < (rowLength * multipier) ? (i - (rowLength * (rowId))) : 0;
-        } else if(!isSameLength && rowLength > columnLength) {
-          rowLength = columnLength;
-          columnId = i < (rowLength * multipier) ? (i - (rowLength * (rowId))) : 0;
-        } else if(!isSameLength && rowLength < columnLength) {
-          rowLength = columnLength;
-          columnId = i < (rowLength * multipier) ? (i - (rowLength * (rowId))) : 0;
-        } else {
-          columnId = i < (rowLength * multipier) ? (i - (rowLength * (rowId))) : 0;
-        }
+        columnId = i < (rowLength * multipier) ? (i - (rowLength * (rowId))) : 0;
 
         /* generate item obj to control it when we checking it */
         let itemObj = {
@@ -135,18 +119,14 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function disableEnableHelper(isReset=false) {
-    let inputColumn = document.getElementById("inputAmount1");
-    let inputRows = document.getElementById("inputAmount2");
+    let inputElement = document.getElementById("inputAmount");;
     let buttonApply = document.getElementById("applySizeButton");
-    if(inputColumn && inputColumn != "" && inputColumn != null &&
-      inputRows && inputRows != "" && inputRows != null &&
+    if(inputElement && inputElement != "" && inputElement != null &&
       buttonApply && buttonApply != "" && buttonApply != null
     ) {
       if(isReset) {
-        inputColumn.removeAttribute("disabled", true);
-        inputRows.removeAttribute("disabled", true);
-        inputColumn.classList.remove("disable-input");
-        inputRows.classList.remove("disable-input");
+        inputElement.removeAttribute("disabled", true);
+        inputElement.classList.remove("disable-input");
         buttonApply.classList.remove("disable-element");
         cleanBoard();
         isGameDone = false;
@@ -159,17 +139,12 @@ document.addEventListener('DOMContentLoaded', function() {
         renderBoard();
         appendNoticeText(defNoticeText);
       } else {
-        inputColumn.setAttribute("disabled", true);
-        inputRows.setAttribute("disabled", true);
-        inputColumn.classList.add("disable-input");
-        inputRows.classList.add("disable-input");
+        inputElement.setAttribute("disabled", true);
+        inputElement.classList.add("disable-input");
         buttonApply.classList.add("disable-element");
-        inputColumn
-        inputRows
         let noticeInGame = "enjoy your game :)";
-        if(inputColumn.value && inputColumn.value != 0 && inputRows.value && inputRows.value != 0) {
-          let diagonalAmount = (inputColumn.value == inputRows.value || inputColumn.value < inputRows.value) ? inputColumn.value : inputRows.value;
-          noticeInGame = `Attention: The winning condition for this session is, horizontal match: <span class="green-text">`+inputColumn.value+` match tile</span>, vertical match: <span class="orange-text">`+inputRows.value+` match tile</span>, diagonal match: <span class="blue-text">`+diagonalAmount+` match tile</span>.`;
+        if(inputElement.value && inputElement.value != 0) {
+          noticeInGame = `Attention: The winning condition for this session is, horizontal match: <span class="green-text">`+inputElement.value+` match tile</span>, vertical match: <span class="orange-text">`+inputElement.value+` match tile</span>, diagonal match: <span class="blue-text">`+inputElement+` match tile</span>.`;
         }
         appendNoticeText(!isGameStarted ? defNoticeText : noticeInGame);
       }
@@ -219,15 +194,11 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function proccessTheGame(lastSelected){
-    let xLength = getScaleTicSize("x");
-    let yLength = getScaleTicSize("y");
-    if(xLength != 0 && yLength != 0) {
-      let winScore = (xLength == yLength || xLength < yLength) ? xLength : yLength;
-      if(crossCounter >= winScore || circleCounter >= winScore) {
-        checkingBoard();
-      } else if ((xLength * yLength) == boardClickCounter) {
-        checkingBoard(true);
-      }
+    let winScore = xyLength;
+    if(crossCounter >= winScore || circleCounter >= winScore) {
+      checkingBoard();
+    } else if ((xyLength * xyLength) == boardClickCounter) {
+      checkingBoard(true);
     }
   }
 
@@ -266,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function horizontalCheck() {
-    let winningScore = getScaleTicSize("x");
+    let winningScore = xyLength;
     let crossCount = 0;
     let circleCount = 0;
     let returnStatus = "";
@@ -289,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function verticalCheck() {
-    let winningScore = getScaleTicSize("y");
+    let winningScore = xyLength;
     let crossCount = 0;
     let circleCount = 0;
     let newBoardScoreWrapper = transpose(boardScoreWrapper);
@@ -313,9 +284,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function diagonalRightCheck() {
-    let xLength = getScaleTicSize("x");
-    let yLength = getScaleTicSize("y");
-    let winningScore = (xLength == yLength || xLength < yLength) ? xLength : yLength;
+    let winningScore = xyLength;
     let crossCount = 0;
     let circleCount = 0;
     let returnStatus = "";
@@ -334,9 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function diagonalLeftCheck() {
-    let xLength = getScaleTicSize("x");
-    let yLength = getScaleTicSize("y");
-    let winningScore = (xLength == yLength || xLength < yLength) ? xLength : yLength;
+    let winningScore = xyLength;
     let crossCount = 0;
     let circleCount = 0;
     let returnStatus = "";

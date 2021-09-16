@@ -14,11 +14,9 @@
     <div class="form-wrapper">
       <div class="input-tile-wrapper">
         <div class="label-for-input">
-          <div class="label-first">Column:</div>
-          <div class="label-second gap-left">Row:</div>
+          <div class="label-first">Board Scale:</div>
         </div>
-        <input type="number" id="inputAmount1" value="3" placeholder="min value is 2" onkeydown="if(event.key==='.'){event.preventDefault();}"  oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');" />
-        <input class="gap-left" type="number" id="inputAmount2" placeholder="min value is 2" value="3" onkeydown="if(event.key==='.'){event.preventDefault();}"  oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');" />
+        <input type="number" id="inputAmount" value="3" placeholder="min value is 2" onkeydown="if(event.key==='.'){event.preventDefault();}"  oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');" min=2 />
       </div>
       <div class="apply-button-wrapper"><button id="applySizeButton">Apply</button></div>
     </div>
