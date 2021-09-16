@@ -217,9 +217,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function announceWinner(winner, outOfTurn) {
     if(winner && winner == "cross") {
-      appendNoticeText("Congratulations to <span class='orange-text'>Player 1</span>, you winning this game");
+      appendNoticeText("Congratulations to <span class='orange-text'>Player One</span>, you winning this game");
     } else if(winner && winner == "circle") {
-      appendNoticeText("Congratulations to <span class='green-text'>Player 2</span>, you winning this game");
+      appendNoticeText("Congratulations to <span class='green-text'>Player Two</span>, you winning this game");
     } else if (winner == "" && outOfTurn) {
       appendNoticeText("Sorry we can't decide the winner");
     }
