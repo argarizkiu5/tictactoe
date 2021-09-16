@@ -189,7 +189,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function chosenPanel(elementSelected) {
     if(elementSelected && elementSelected != "" && elementSelected != null) {
-      /* console.log("selectedElement", elementSelected); */
       let crossCircleClassName = isPlayerOne ? "crossed-panel" : "circled-panel";
       if(isPlayerOne) {
         crossCounter += 1;
@@ -228,7 +227,6 @@ document.addEventListener('DOMContentLoaded', function() {
         checkingBoard();
       } else if ((xLength * yLength) == boardClickCounter) {
         checkingBoard(true);
-        /* console.log("draw", boardScoreWrapper); */
       }
     }
   }
